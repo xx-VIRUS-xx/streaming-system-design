@@ -1,0 +1,331 @@
+Hotstart have two control plane - Control and data
+
+Control Plane 
+Login
+Catalog
+Search
+Subscriptions
+Watch history
+Recommendations
+Playback authorization
+User profile
+
+Data Plane
+Movie
+Episode
+Live stream
+Video segments
+Audio
+Subtitles
+
+Naive architecture 
+                    ┌─────────────┐
+User ──────────────►│ FastAPI     │
+                    │ Server      │
+                    └──────┬──────┘
+                           │
+                           ▼
+                       Database
+
+User                          
+  │
+  │ GET /movie.mp4
+  ▼
+FastAPI
+  │
+  ▼
+Storage
+
+Problem 1:
+100,000 users
+      │
+      ▼
+Application servers
+      │
+      ▼
+Storage
+
+Your application servers should not become your video delivery network.
+
+Solution 1:
+                         ┌──────────────┐
+                         │   API        │
+                         │ Control Plane│
+                         └──────┬───────┘
+                                │
+                         metadata/auth
+                                │
+                                ▼
+                           Database
+
+
+                         ┌──────────────┐
+                         │ Video        │
+                         │ Storage      │
+                         └──────┬───────┘
+                                │
+                                ▼
+                              CDN
+                                │
+                         ┌──────┼──────┐
+                         ▼      ▼      ▼
+                       User   User   User
+
+Transcoders Needed
+Suppose we have Avengers.mp4 ~5gb
+We could progressively stream , but modern streaming systems need flexibility So,
+Conceptually:
+Original Video
+      │
+      ▼
+ ┌─────────────┐
+ │ Transcoder  │
+ └──────┬──────┘
+        │
+        ▼
+ ┌───────────────────────────┐
+ │ Video segments            │
+ │                           │
+ │ segment001                │
+ │ segment002                │
+ │ segment003                │
+ │ segment004                │
+ │ ...                       │
+ └───────────────────────────┘
+
+Now player doesn't need entire movie , It can requests segmentN as playback progress.
+Why segments?
+Problem 2: Imagine user network changes from 20mbps to 2mbps , video ges from 1080p to lower res.
+Solution 2 : Segments witg Adaptive bitrate streaming, same video into different representations.
+                  Original
+                     │
+              ┌──────┴──────┐
+              ▼             ▼
+           1080p           720p
+              │             │
+              ▼             ▼
+           segments       segments
+              
+              ┌──────────────┐
+              │ 480p         │
+              └──────┬───────┘
+                     ▼
+                  segments
+protocols : HLS or MPEG-DASH
+
+Where does all this happen?
+Creator -> movie.mp4 uploads
+
+Problem 3 : sit for 30 min for transcoding
+Solution 3:                  Upload
+                   │
+                   ▼
+                Storage
+                   │
+                   ▼
+                  Job
+                   │
+                   ▼
+                 Queue
+                   │
+          ┌────────┼────────┐
+          ▼        ▼        ▼
+       Worker   Worker   Worker
+          │        │        │
+          └────────┼────────┘
+                   ▼
+              Transcoded
+                 video
+                   │
+                   ▼
+               Segments
+                   │
+                   ▼
+                Storage
+
+DB : Video
+-------------------------
+id
+title
+duration
+source_uri
+status
+created_at
+updated_at
+
+VideoRepresentation
+-------------------------
+video_id
+resolution
+codec
+bitrate
+manifest_uri
+
+Video gets stored at Object storage
+Object Storage
+
+/videos/
+   movie123/
+      original/
+      1080p/
+      720p/
+      480p/
+      manifests/
+
+Problem 4: Suppose 1 million people requests same segment 
+Solution 4: CDN: caches that segment at edge location
+Object Storage
+      │
+      ▼
+     CDN
+      │
+      ▼
+    Users
+  
+                Origin
+                  │
+             first request
+                  │
+                  ▼
+              CDN Edge
+                  │
+       ┌──────────┼──────────┐
+       ▼          ▼          ▼
+     User       User       User
+
+Roughly architecture becomes:
+                         CONTROL PLANE
+                             
+                         ┌───────────┐
+                         │   Client  │
+                         └─────┬─────┘
+                               │
+                               ▼
+                         ┌───────────┐
+                         │ API       │
+                         └─────┬─────┘
+                               │
+                  ┌────────────┼────────────┐
+                  ▼            ▼            ▼
+              Auth/User     Catalog      Playback
+                  │            │            │
+                  └────────────┼────────────┘
+                               ▼
+                           Database
+
+
+                         DATA PLANE
+
+                         ┌───────────┐
+                         │   CDN     │
+                         └─────┬─────┘
+                               │
+                               ▼
+                        Object Storage
+                               ▲
+                               │
+                         Transcoding
+                               ▲
+                               │
+                            Queue
+                               ▲
+                               │
+                           Upload
+
+User Journey :
+1. User opens app
+        ↓
+2. Authenticate
+        ↓
+3. Fetch catalog
+        ↓
+4. User selects movie
+        ↓
+5. Request playback authorization
+        ↓
+6. API returns playback information
+        ↓
+7. Player obtains manifest
+        ↓
+8. Player requests segments
+        ↓
+9. CDN serves segments
+        ↓
+10. Player continuously requests next segments
+
+Problem 1
+
+What happens when 10 million people watch the same cricket match?
+
+That leads us to:
+
+CDN + caching + live streaming + origin scaling.
+
+Problem 2
+
+What happens when 100,000 people upload videos?
+
+That leads to:
+
+queues + worker pools + scheduling + GPU/CPU capacity.
+
+Problem 3
+
+What happens when a transcoding worker crashes halfway through?
+
+That leads to:
+
+idempotency + retries + job state + checkpoints.
+
+Problem 4
+
+How does the player know whether to request 1080p or 480p?
+
+That leads to:
+
+adaptive bitrate algorithms + bandwidth estimation + buffering.
+
+Problem 5
+
+How do we stop someone from downloading content they haven't paid for?
+
+That leads to:
+
+authentication + authorization + signed URLs/tokens + DRM concepts.
+
+Problem 6
+
+How does Hotstar know what you want to watch?
+
+That leads to:
+
+event collection + recommendation systems + feature pipelines + ranking.
+
+Problem 7
+
+How do millions of users search the catalog?
+
+That leads to:
+
+search indexing + ranking + caching.
+
+Problem 8
+
+How do we keep the service alive if an entire region fails?
+
+That leads to:
+
+multi-region architecture + replication + failover + disaster recovery.
+
+And eventually:
+Simple Streaming System
+        ↓
+Scalable Streaming System
+        ↓
+Large-Scale VOD
+        ↓
+Live Streaming
+        ↓
+Global Distribution
+        ↓
+Hotstar-like Architecture

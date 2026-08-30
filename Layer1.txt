@@ -1,0 +1,229 @@
+Layer1: Ingestion -> Playback
+                CONTENT PIPELINE
+
+Raw Video
+   │
+   ▼
+Upload
+   │
+   ▼
+Object Storage
+   │
+   ▼
+Queue
+   │
+   ▼
+Transcoding Workers
+   │
+   ▼
+Segmentation
+   │
+   ▼
+Object Storage
+   │
+   ▼
+CDN
+   │
+   ▼
+Player
+
+Why can't the player simply ask for movie.mp4? 
+Why do we need manifests, segments, multiple qualities and a streaming protocol?
+
+Raw video vs Streaming video
+movie.mp4 might contain:
+Video codec
+Audio codec
+Resolution
+Frame rate
+Bitrate
+Duration
+┌─────────────────────────────────────────────┐
+│                 movie.mp4                   │
+│                                             │
+│ video + audio + metadata                    │
+│                                             │
+└─────────────────────────────────────────────┘
+Problems:
+mobile network fluctuates
+user switches Wi-Fi/mobile
+bandwidth changes
+user seeks to 1:32:14
+user has a 480p device
+another user has a 4K TV
+
+Transcoding & Segmentation:
+4k master 
+                  Source
+                    │
+             ┌──────┼──────┐
+             ▼      ▼      ▼
+           1080p   720p   480p
+             │      │      │
+             ▼      ▼      ▼
+          segments segments segments
+
+1080p
+ │
+ ├── segment_001
+ ├── segment_002
+ ├── segment_003
+ └── ...
+
+ Source
+  ↓
+Transcoding
+  ↓
+Multiple representations
+  ↓
+Segmentation
+
+This helps in buffering, seeking and adaptation:
+Playback
+   ↓
+[played][current][next][next][next]
+Jumping to a later point doesn't necessarily require downloading everything before it.
+The next segment can be requested at another quality.
+
+Manifest:
+Problems:
+The player needs to know:
+
+What streams exist?
+
+Where are they?
+
+What qualities are available?
+
+How long are the segments?
+
+                 Manifest
+                    │
+       ┌────────────┼────────────┐
+       ▼            ▼            ▼
+     1080p         720p         480p
+       │            │            │
+    segments     segments     segments
+
+Manifest = map describing the available media representations and segments.
+
+Playback we had:
+User
+ ↓
+API
+ ↓
+CDN
+ ↓
+Video
+
+Now:
+User
+ ↓
+API
+ ↓
+Playback authorization
+ ↓
+Manifest
+ ↓
+Player parses manifest
+ ↓
+Selects representation
+ ↓
+Requests segment
+ ↓
+CDN
+ ↓
+Segment
+then:
+Player
+ ↓
+measure network/buffer
+ ↓
+choose next segment
+ ↓
+request
+ ↓
+play
+ ↓
+repeat
+
+Adaptive bitrate:
+Suppose:
+1080p → 8 Mbps
+720p  → 5 Mbps
+480p  → 2 Mbps
+360p  → 800 Kbps
+Initially:
+Available bandwidth ≈ 15 Mbps
+Player choose:
+1080p
+Then network degrades
+Available bandwidth ≈ 3 Mbps
+The player observes that its buffer is being consumed faster than it can refill.
+It may switch:
+1080p
+  ↓
+720p
+  ↓
+480p
+
+Why DB shouldn't atore segments?
+Bad Idea:
+PostgreSQL
+   ↓
+binary video segments
+
+Better Idea:
+PostgreSQL
+   ↓
+metadata + state + references
+
+Object Storage
+   ↓
+actual media
+
+Next Problem : Live content
+Imagine a cricket match.
+
+Unlike a movie, the content is continuously being generated.
+For VOD:
+Movie already exists
+       ↓
+Transcode
+       ↓
+Store
+       ↓
+Serve
+
+For Live:
+Camera
+ ↓
+Encoder
+ ↓
+Segments being generated
+ ↓
+Origin
+ ↓
+CDN
+ ↓
+Millions of users
+
+pipeline is continuously moving.
+New metric:End-to-End Latency
+Imagine:
+Camera captures event
+        ↓
+Encoding
+        ↓
+Segment creation
+        ↓
+Origin
+        ↓
+CDN
+        ↓
+Player buffer
+        ↓
+User sees event
+
+if this takes 20s, The user sees the goal 20 seconds after it happened.That's painful.
+For learning about this , we need different layer.

@@ -1,0 +1,225 @@
+What does "1 million users" actually mean?
+Consider 1 million concurrent viewers watching the same match.
+                    1M VIEWERS
+                        │
+          ┌─────────────┼─────────────┐
+          ▼             ▼             ▼
+       Control       Playback       Events
+        traffic       traffic       traffic
+          │             │             │
+          ▼             ▼             ▼
+        APIs           CDN       Analytics
+
+Control plane requests
+GET /home
+GET /catalog
+GET /profile
+GET /recommendations
+POST /login
+POST /playback
+
+              1M users
+                  │
+                  ▼
+             Load Balancer
+                  │
+        ┌─────────┼─────────┐
+        ▼         ▼         ▼
+      API-1     API-2     API-3
+        │         │         │
+        └─────────┼─────────┘
+                  ▼
+              Services
+We can horizontally scale stateless API servers.
+
+Playback traffic is completely different
+1 viewer might request 15 segments / minute
+1 million it becomes 15 × 1,000,000
+=
+15 million segment requests / minute
+roughly 250,000 segment requests / second
+CDN absorbs playback workload 
+                    User
+                      │
+                      ▼
+                     CDN
+                      │
+             ┌────────┴────────┐
+             │                 │
+         cache hit          cache miss
+             │                 │
+             ▼                 ▼
+           User            Origin
+                               │
+                               ▼
+                         Object Storage
+Cache locality becomes extremely important
+                    Origin
+                      │
+        ┌─────────────┼─────────────┐
+        ▼             ▼             ▼
+     Delhi          Mumbai        Jaipur
+      Edge            Edge          Edge
+        │              │             │
+      users          users          users
+This improves:
+latency
+throughput
+origin protection
+
+But there's an interesting problem with live streaming
+LIVE
+ │
+ ├── segment001
+ ├── segment002
+ ├── segment003
+ └── segment004 ← currently being produced
+
+creates tension:
+Long cache lifetime
+        ↕
+Fresh live content
+
+If cache too aggressively : Users see stale content
+If no cache: Origin gets hammered
+Consistency, freshness, latency and scalability are constantly fighting each other.
+
+API layers shouldn't contain video itself:
+It's job is :
+User
+ │
+ ▼
+API Gateway / Load Balancer
+ │
+ ├── Auth Service
+ ├── User Service
+ ├── Catalog Service
+ ├── Playback Service
+ ├── Recommendation Service
+ └── Search Service
+
+ At beginning we don't need microservices:
+ Client
+  ↓
+Load Balancer
+  ↓
+Application
+  ↓
+Database
+As scale and team boundaries grow, services can separate.
+
+The architectural principle is more important than prematurely turning everything into microservices.
+The most importnat property of the API servers, they are stateless.
+Persistent state lives in external systems
+API servers
+    │
+    ├── Database
+    ├── Cache
+    ├── Session store
+    └── Object storage
+
+For each request requesting same content constantly we don't want
+API
+ ↓
+PostgreSQL
+ ↓
+return
+Instead:
+
+                 ┌─────────────┐
+                 │    Redis    │
+                 └──────▲──────┘
+                        │
+API ────────────────────┤
+                        │
+                        ▼
+                  PostgreSQL
+
+Typical flow:
+API
+ ↓
+Redis?
+ │
+ ├── HIT → return
+ │
+ └── MISS
+       ↓
+   PostgreSQL
+       ↓
+   Redis SET
+       ↓
+   return
+
+Redis caches application data 
+CDN caches media and other HTTP-deliverable assets
+                    USER
+                     │
+              ┌──────┴──────┐
+              │             │
+           API data      Video data
+              │             │
+           Redis          CDN
+              │             │
+          PostgreSQL    Object Storage
+
+
+Events:
+User started playback
+User paused
+User watched 30 seconds
+User completed episode
+User skipped
+User searched
+User clicked recommendation
+User abandoned playback
+We do not want every one of these events synchronously hitting PostgreSQL.
+Client
+  │
+  ▼
+Event API
+  │
+  ▼
+Kafka / Event Stream
+  │
+  ├─────────────┐
+  ▼             ▼
+Analytics    Recommendation
+Pipeline       Pipeline
+
+New architecture:
+                         USERS
+                           │
+             ┌─────────────┴─────────────┐
+             │                           │
+             ▼                           ▼
+       CONTROL PLANE                DATA PLANE
+             │                           │
+             ▼                           ▼
+       Load Balancer                    CDN
+             │                           │
+             ▼                           ▼
+        API Servers                 Video Segments
+             │                           │
+       ┌─────┼──────┐                    ▼
+       ▼     ▼      ▼              Object Storage
+    Redis   DB    Services
+       │
+       ▼
+   PostgreSQL
+
+
+                     USER EVENTS
+                           │
+                           ▼
+                         Kafka
+                      ┌────┼────┐
+                      ▼    ▼    ▼
+                 Analytics ML  Recommendations
+
+Four different workloads:
+1. Control plane
+2. Video delivery
+3. Content processing
+4. Event processing
+
+The number of users is not the same thing as the load on every component.
