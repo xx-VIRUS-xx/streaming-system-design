@@ -1,35 +1,77 @@
-# Short post — X/LinkedIn thread
+# Hio Jotstar — Episode 1: "The Ban"
 
-Learning system design by rebuilding Hotstar from scratch. Day 1 lesson:
+**Format:** Insta Reel / YT Short script. Storytime voice, comedic delivery,
+text overlay for the diagram.
 
-Your API server should never serve video bytes directly.
+---
 
-Here's the naive version everyone starts with:
+**[HOOK — first 2 seconds, punchy]**
+
+StoryTime 📖 Once my bro got into beef with Ambani...
+
+**[SETUP]**
+
+...and got PERMANENTLY banned from Jio Hotstar. 😭
+
+Bro couldn't accept defeat. So bro did what any unemployed genius would do —
+
+He built his OWN app.
+
+**[REVEAL — dramatic zoom]**
+
+Ladies and gentlemen... presenting...
+
+# 🔥 HIO JOTSTAR 🔥
+
+**[THE ARCHITECTURE — show as text/diagram overlay]**
+
+Bro's entire backend, for streaming movies to potentially millions of users:
 
 ```
-User → FastAPI Server → Storage
+User
+  │
+  │ GET /movie.mp4
+  ▼
+FastAPI
+  │
+  ▼
+Storage
 ```
 
-Looks fine for one user. Now put 100,000 users on it.
+**[REACTION — the roast]**
 
-Every single one of those users is now streaming video *through* your
-application server. Congratulations, you just turned your API into a video
-delivery network. It wasn't built for that. It falls over.
+tch tch tch... 😩 Bro is SO naive.
 
-The fix: split the system into two planes.
+Bro thinks his one little FastAPI server is going to hand out 5GB movie files
+to every single user, directly, forever.
 
-- **Control plane** — login, catalog, search, "can this user watch this?"
-- **Data plane** — the actual video bytes
+Bro's server when 100 people open the app at once:
+💀💀💀
 
-The API's only job is to say yes/no and hand back a URL. It never touches
-the video itself. The video comes from object storage, fronted by a CDN.
+**[THE LESSON — quick, no lecture tone]**
 
-```
-API → decides who can watch
-CDN  → actually delivers the bytes
-```
+See here's the thing nobody tells you: your API server's job is to say "yes
+you can watch this" — NOT to actually hand over the video. The second your
+app server starts pushing video bytes to users, it IS your video delivery
+network now. And it was never built for that job.
 
-One rule I keep coming back to: **the API controls access, the CDN delivers
-content.** Never let those two jobs live in the same server.
+That's why real platforms split it into two jobs: one server says "you're
+allowed," a completely different system (CDN + storage) actually delivers
+the bytes.
 
-Next up: why streaming apps don't just serve you a movie.mp4.
+**[OUTRO / HOOK FOR NEXT EP]**
+
+Bro found this out the hard way when 100k people showed up on day one.
+
+Next time: bro discovers his server melted. 🔥 Follow for part 2.
+
+---
+
+*True Story!! 😂*
+
+---
+
+**Caption for post:**
+Bro got banned from Jio Hotstar so he built Hio Jotstar 💀 spoiler: his
+architecture is NOT it. #systemdesign #softwareengineering #buildinpublic
+#learningtocod #hiojotstar

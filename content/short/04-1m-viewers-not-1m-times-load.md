@@ -1,33 +1,75 @@
-# Short post — X/LinkedIn thread
+# Hio Jotstar — Episode 4: "Everyone Presses Play"
 
-Learning in public: "1 million concurrent users" doesn't mean 1 million times
-the load on every part of your system. This was the most useful reframe I've
-hit so far studying Hotstar-scale design.
+**Format:** Insta Reel / YT Short script.
 
-Break the traffic apart by what it actually touches:
+---
+
+**[HOOK]**
+
+StoryTime part 4 📖 Bro's app is actually working now. Multiple qualities,
+smooth playback, no more buffering complaints.
+
+Then bro made a HUGE mistake.
+
+Bro announced he got the streaming rights to a cricket match.
+
+**[THE SETUP]**
+
+10 million people. Same match. Same moment. Everyone hits play within
+literal seconds of each other.
+
+Bro, confidently: "it's fine, I already fixed the video streaming thing"
+
+Narrator: it was not fine.
+
+**[THE ROAST]**
+
+tch tch tch bro thought "1 million users" was just... one big number he
+needed one big server for. 😩
+
+Nah bro. It's not ONE problem. It's like 3 different problems wearing a
+trenchcoat:
 
 ```
-1M viewers
-   ├── Control traffic  → APIs (login, catalog, recommendations)
-   ├── Playback traffic → CDN (video segments)
-   └── Event traffic    → Analytics (play, pause, seek, complete)
+10M viewers hitting play
+        │
+   ┌────┼────┐
+   ▼    ▼    ▼
+ Login  Video  "user paused
+ /home traffic  at 3:42" etc
+ traffic         (events)
 ```
 
-The API load scales roughly linearly and is small per user — GET /catalog,
-GET /recommendations. Stateless servers behind a load balancer handle this
-fine.
+Login and "what's on" traffic? Chill, spread it across a few servers, easy.
 
-Playback traffic is a different beast. One viewer might request ~15 segments
-a minute. At 1M concurrent viewers, that's 15 million segment requests a
-minute — roughly 250,000 requests/second. Your API servers were never going
-to survive that. The CDN has to absorb almost all of it, serving from edge
-caches so only cache *misses* ever reach your origin.
+Video traffic? 10 million people asking for a new chunk every few seconds —
+that's HUNDREDS of THOUSANDS of requests per second. Bro's storage bucket
+alone was never going to survive that; it needs a CDN caching the same
+popular chunks near each city so most requests never even reach the origin.
 
-Event traffic (every pause, seek, skip) is high-volume but doesn't need to be
-synchronous. It goes onto a stream (Kafka) and gets processed by analytics
-and recommendation pipelines later, not written straight to Postgres on the
-request path.
+Every pause/skip/rage-quit event? Also can't hit the main database directly
+per event or bro's database dies before the toss even happens. Needs to go
+into a queue and get processed later, calmly.
 
-Three totally different scaling problems hiding under one number: "1 million
-users." The number of users isn't the same thing as the load on any single
-component — you have to break it apart by workload first.
+**[THE PAYOFF]**
+
+Bro's mistake: treating "10 million users" as one uniform load. It's not.
+It's three completely different problems that each need their own fix.
+
+**[OUTRO]**
+
+Next time: what happens when the video doesn't even exist yet because it's
+being filmed live, right now, as people are already watching it. 🎥
+
+Follow for the finale.
+
+---
+
+*True Story!! 😂*
+
+---
+
+**Caption for post:**
+Bro learned "10 million users" isn't one problem, it's three 💀 part 4 —
+this is why Hotstar doesn't fall over during IPL finals. #systemdesign
+#hiojotstar #scalability #cricket
