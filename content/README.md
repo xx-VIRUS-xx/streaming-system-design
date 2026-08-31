@@ -9,6 +9,13 @@ scale, we roast his architecture ("tch tch tch bro is so naive"), then land
 the actual system design lesson in one clean beat. Ends with a hook into the
 next episode.
 
+**Series punchline (every episode, right after the fix is revealed):**
+> "Let's tod fod it."
+
+This is the sign-off/stamp — say it out loud right after explaining the real
+fix, before the outro tease. It's the "and that's the tea" of this series;
+keep it in every episode so it becomes recognizable.
+
 ## Structure
 
 - `short/` — Insta Reel / YT Short scripts. One episode = one failure = one

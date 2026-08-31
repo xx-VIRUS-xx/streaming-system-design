@@ -51,19 +51,28 @@ Bro's server when 100 people open the app at once:
 **[THE LESSON — quick, no lecture tone]**
 
 See here's the thing nobody tells you: your API server's job is to say "yes
-you can watch this" — NOT to actually hand over the video. The second your
-app server starts pushing video bytes to users, it IS your video delivery
-network now. And it was never built for that job.
+you can watch this" — NOT to actually hand over the video. Bro built himself
+a bouncer, and then made the bouncer also personally carry every guest into
+the club on his back. One at a time. For 100,000 guests.
+
+The second your app server starts pushing video bytes to users, it IS your
+video delivery network now. And it was never built for that job — it was
+built to check IDs, not deadlift 5GB files.
 
 That's why real platforms split it into two jobs: one server says "you're
 allowed," a completely different system (CDN + storage) actually delivers
 the bytes.
 
+**[THE PUNCHLINE]**
+
+Let's tod fod it. 🫡
+
 **[OUTRO / HOOK FOR NEXT EP]**
 
-Bro found this out the hard way when 100k people showed up on day one.
+Bro found this out the hard way when 100k people showed up on day one and
+his laptop started sounding like a 747 on takeoff.
 
-Next time: bro discovers his server melted. 🔥 Follow for part 2.
+Next time: bro discovers his server melted. Literally. 🔥 Follow for part 2.
 
 ---
 
@@ -110,7 +119,7 @@ So the real fix: split it into two jobs. One system checks who's allowed.
 A completely different system — storage plus a CDN — actually delivers the
 video.
 
-Let's do it. True story.
+Let's tod fod it.
 
-*(hold on corrected diagram, cut)*
+*(hold on corrected diagram, cut — text overlay: "Let's tod fod it" as end-card stamp)*
 
