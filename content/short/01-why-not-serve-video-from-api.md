@@ -1,31 +1,41 @@
 # Hio Jotstar — Episode 1: "The Ban"
 
-**Format:** Insta Reel / YT Short script. Storytime voice, comedic delivery,
-text overlay for the diagram.
+**Format:** Insta Reel / YT Short script. Hinglish rhyme storytime, delivered
+over cat footage. Cast: Bambani (left), Bro (middle), Tod Fod Engineer
+(right) — see [`../PRODUCTION.md`](../PRODUCTION.md).
 
 ---
 
-**[HOOK — first 2 seconds, punchy]**
+## THE SCRIPT (official — rhyme, VO)
 
-StoryTime 📖 Once my bro got into beef with Ambani...
+*(Read aloud, matched to cat cuts — one line per cat-cut roughly, see timing
+notes below.)*
 
-**[SETUP]**
+```
+Hum h teen dudez
+ek Bambani ek Bro or me hu Tod Fod Engineer
 
-...and got PERMANENTLY banned from Jio Hotstar. 😭
+we got some foodz
+but Bro or Bambani ka hua lafda
 
-Bro couldn't accept defeat. So bro did what any unemployed genius would do —
+Bambani h mota seth or Bro k paas nhi h kapda
+Bro ne kiya Bambani pe vaar
 
-He built his OWN app.
+Bambani ne kiya ban from Jio Hotstar
+ab Bro lega badla
 
-**[REVEAL — dramatic zoom]**
+dikhaega kitna h hoshiyar,
+Bro ka hua h tiraskar
 
-Ladies and gentlemen... presenting...
+Bro bnaega Hio Jotstar
+but yeh kya
 
-# 🔥 HIO JOTSTAR 🔥
+Bro ka architecture h guu
+Bro h bada wala chuuuu
+```
 
-**[THE ARCHITECTURE — show as text/diagram overlay]**
-
-Bro's entire backend, for streaming movies to potentially millions of users:
+**[THE ARCHITECTURE — whiteboard-sketch overlay, timed to "Bro ka
+architecture h guu"]**
 
 ```
 User
@@ -38,41 +48,29 @@ FastAPI
 Storage
 ```
 
-**[REACTION — the roast]**
+**[THE LESSON — quick VO tag right after the rhyme, before cutting to
+Tod Fod Engineer]**
 
-tch tch tch... 😩 Bro is SO naive.
+Ek hi server sab kuch kar raha hai — permission bhi de raha hai, aur poora
+movie file bhi khud hi bhej raha hai lakhon logon ko. Ye kaam ek akela
+FastAPI server ke liye nahi hai. Jab 100,000 log ek saath aayenge, ye server
+udd jayega.
 
-Bro thinks his one little FastAPI server is going to hand out 5GB movie files
-to every single user, directly, forever.
+Asli fix: ek system decide karta hai "kaun dekh sakta hai" — doosra system
+(CDN + storage) actually video deliver karta hai. Do alag kaam, do alag
+system.
 
-Bro's server when 100 people open the app at once:
-💀💀💀
-
-**[THE LESSON — quick, no lecture tone]**
-
-See here's the thing nobody tells you: your API server's job is to say "yes
-you can watch this" — NOT to actually hand over the video. Bro built himself
-a bouncer, and then made the bouncer also personally carry every guest into
-the club on his back. One at a time. For 100,000 guests.
-
-The second your app server starts pushing video bytes to users, it IS your
-video delivery network now. And it was never built for that job — it was
-built to check IDs, not deadlift 5GB files.
-
-That's why real platforms split it into two jobs: one server says "you're
-allowed," a completely different system (CDN + storage) actually delivers
-the bytes.
-
-**[THE PUNCHLINE]**
+**[THE PUNCHLINE — Tod Fod Engineer on screen, stamp on screen: "Let's tod
+fod it"]**
 
 Let's tod fod it. 🫡
 
 **[OUTRO / HOOK FOR NEXT EP]**
 
-Bro found this out the hard way when 100k people showed up on day one and
-his laptop started sounding like a 747 on takeoff.
+100,000 log aaye, Bro ka server pura crash ho gaya. Agli baar dikhayenge
+kaise.
 
-Next time: bro discovers his server melted. Literally. 🔥 Follow for part 2.
+Follow for part 2.
 
 ---
 
@@ -81,45 +79,73 @@ Next time: bro discovers his server melted. Literally. 🔥 Follow for part 2.
 ---
 
 **Caption for post:**
-Bro got banned from Jio Hotstar so he built Hio Jotstar 💀 spoiler: his
-architecture is NOT it. #systemdesign #softwareengineering #buildinpublic
-#learningtocod #hiojotstar
+Hum hai 3-Dudez 🐱 Bambani, Bro, aur Tod Fod Engineer. Bro ka architecture
+dekh ke khud hi bologe "yeh kya bakwaas hai" 💀 #hiojotstar #systemdesign
+#3dudez #catsofinstagram #buildinpublic
 
 ---
 
-## Voiceover-only script
+## Timing / cutting notes for the edit
 
-*(No visual directions — read this straight over your cat footage. Pause
-where marked for the diagram to sit on screen.)*
+Rough beat-to-cat mapping (adjust once VO is recorded and timestamped):
 
-Once upon a time, my bro got into beef with Ambani, so bro got banned from
-Jio Hotstar.
+1. "Hum h teen dudez" → group shot (all 3 in frame, e.g. the bed photo)
+2. "ek Bambani" → cut/hold on Bambani (left, b&w kitten)
+3. "ek Bro" → cut to Bro (middle, ginger kitten)
+4. "or me hu Tod Fod Engineer" → cut to Tod Fod Engineer (right, orange-white)
+5. "we got some foodz" → playful/eating or neutral cutaway if available
+6. "lafda" / "vaar" / "ban" lines → alternate quick cuts between Bambani and
+   Bro to sell the beef, faster cut pace
+7. "Bro bnaega Hio Jotstar" → hold on Bro, confident framing
+8. "Bro ka architecture h guu" → whiteboard-sketch diagram overlay appears
+   over Bro's shot
+9. Lesson VO → diagram stays on screen or transitions to corrected
+   two-box diagram
+10. "Let's tod fod it" → hard cut to Tod Fod Engineer, punchline stamp
+    on-screen, timed to hit exactly on the line
 
-Now, like any rational developer, bro decided to build his own version —
-Hio Jotstar.
+---
 
-But the problem was, the app architecture looked like this.
+## Older English draft (superseded)
 
-*(pause — diagram on screen: User → GET /movie.mp4 → FastAPI → Storage)*
+Kept for reference — not the version being produced. The rhyme script above
+is canonical for Episode 1 going forward.
 
-Bro is so naive.
+**[HOOK — first 2 seconds, punchy]**
 
-Bro's entire app is one server, handing out the movie file directly to
-every single person who asks for it. That's fine for bro. That is not fine
-for a hundred thousand people opening the app on day one.
+StoryTime 📖 Once my bro got into beef with Ambani...
 
-Now let me make a correction in the architecture.
+**[SETUP]**
 
-The API server's only job should be to say "yes, you're allowed to watch
-this." It should never be the one handing over the actual video. The moment
-it starts doing that, it's not an API anymore — it's a video delivery
-network, and it was never built to survive that.
+...and got PERMANENTLY banned from Jio Hotstar. 😭 Bro couldn't accept
+defeat. So bro did what any unemployed genius would do — he built his OWN
+app.
 
-So the real fix: split it into two jobs. One system checks who's allowed.
-A completely different system — storage plus a CDN — actually delivers the
-video.
+**[REVEAL]**
 
-Let's tod fod it.
+Ladies and gentlemen... presenting... HIO JOTSTAR
 
-*(hold on corrected diagram, cut — text overlay: "Let's tod fod it" as end-card stamp)*
+**[THE ARCHITECTURE]**
 
+```
+User
+  │
+  │ GET /movie.mp4
+  ▼
+FastAPI
+  │
+  ▼
+Storage
+```
+
+**[THE LESSON]**
+
+Your API server's job is to say "yes you can watch this" — NOT to actually
+hand over the video. The second your app server starts pushing video bytes
+to users, it IS your video delivery network now, and it was never built for
+that job. Real platforms split it: one server says "you're allowed," a
+completely different system (CDN + storage) actually delivers the bytes.
+
+**[PUNCHLINE]**
+
+Let's tod fod it. 🫡
