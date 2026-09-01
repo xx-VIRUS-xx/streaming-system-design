@@ -18,10 +18,13 @@ keep it in every episode so it becomes recognizable.
 
 ## Structure
 
-- `short/` — Insta Reel / YT Short scripts. One episode = one failure = one
-  fix. Named `NN-topic.md`, in episode order. Each file has the full script
-  (hook / setup / roast / lesson / outro) plus a ready-to-use caption and a
-  voiceover-only version to read over your cat footage.
+- `short/` — Insta Reel / YT Short scripts. Each system-design failure/fix
+  is a **Story**, and each Story can span multiple **Parts** (a cliffhanger
+  Part 1, a payoff Part 2, etc.) — a Story doesn't have to resolve in one
+  video. Files are named `NNx-storyN-partN-topic.md` (e.g.
+  `01a-story1-part1-the-ban.md`, `01b-story1-part2-the-fix.md`). Each part
+  has the script (rhyme intro where applicable, roast, lesson, punchline,
+  outro) plus a ready-to-use caption.
 - `twitter/` — X/Twitter thread version of each episode, same beats
   compressed into tweet-sized chunks with inline ASCII diagrams. Post it as
   a reply-chain under the video clip, or standalone for people who'd rather
@@ -47,18 +50,23 @@ Keep each script short enough to read aloud in 30-45 seconds.
 - [`../Layer2.txt`](../Layer2.txt) / [`../Layer2_Flow_Diagrams.md`](../Layer2_Flow_Diagrams.md) — scaling to 1M+ users
 - [`../Layer3.txt`](../Layer3.txt) — not started yet ("The Everyone Presses Play Problem")
 
-## Episode status
+## Story / Part status
 
-| # | Episode title | Lesson | Twitter thread | Long-form companion |
-|---|---|---|---|---|
-| 01 | The Ban | API shouldn't serve video bytes directly | ✅ | Control plane vs data plane |
-| 02 | The Meltdown | Split control plane (permission) from data plane (delivery) | ✅ | — |
-| 03 | One File to Rule Them All (Bad Idea) | Segments + adaptive bitrate streaming | ✅ | — |
-| 04 | Everyone Presses Play | 1M users = 3 different workloads, not 1 big number | ✅ | Scaling to a cricket match |
-| 05 | TBD (from Layer3) | Live streaming: content doesn't exist yet when people start watching | — | — |
+| Story | Part | Title | Lesson | Twitter thread | Long-form companion |
+|---|---|---|---|---|---|
+| 1 | 1 | The Ban | Setup/cliffhanger — naive one-server architecture revealed | — | — |
+| 1 | 2 | The Fix | API shouldn't serve video bytes directly; split control/data plane | — | Control plane vs data plane |
+| 2 | 1 | The Meltdown | (topic content exists under old `02-*.md`, not yet split into Story/Part) | ✅ | — |
+| 3 | 1 | One File to Rule Them All (Bad Idea) | Segments + adaptive bitrate streaming | ✅ | — |
+| 4 | 1 | Everyone Presses Play | 1M users = 3 different workloads, not 1 big number | ✅ | Scaling to a cricket match |
+| 5 | — | TBD (from Layer3) | Live streaming: content doesn't exist yet when people start watching | — | — |
+
+Note: Stories 2-4 still use the flat `NN-topic.md` naming from before the
+Story/Part convention was introduced — rename/split them the same way as
+Story 1 when they're next revised.
 
 ## Next up
 
 Layer3.txt is just a title so far: "The Everyone Presses Play Problem." Once
-that layer gets fleshed out, Episode 5 covers live streaming — the video
+that layer gets fleshed out, it becomes Story 5 — live streaming, the video
 being generated in real time as the match happens.

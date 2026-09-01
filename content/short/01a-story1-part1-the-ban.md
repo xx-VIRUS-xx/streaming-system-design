@@ -1,8 +1,12 @@
-# Hio Jotstar — Episode 1: "The Ban"
+# Hio Jotstar — Story 1, Part 1: "The Ban"
 
 **Format:** Insta Reel / YT Short script. Hinglish rhyme storytime, delivered
 over cat footage. Cast: Bambani (left), Bro (middle), Tod Fod Engineer
 (right) — see [`../PRODUCTION.md`](../PRODUCTION.md).
+
+Story 1 is a multi-part series. Part 1 = intro + setup + cliffhanger only.
+The roast/lesson/fix for the naive architecture lands in **Part 2**
+([`01b-story1-part2-the-fix.md`](01b-story1-part2-the-fix.md)).
 
 ---
 
@@ -35,7 +39,7 @@ Bro h bada wala chuuuu
 ```
 
 **[THE ARCHITECTURE — whiteboard-sketch overlay, timed to "Bro ka
-architecture h guu"]**
+architecture h guu", held on screen through the cut to black]**
 
 ```
 User
@@ -48,40 +52,23 @@ FastAPI
 Storage
 ```
 
-**[THE LESSON — quick VO tag right after the rhyme, before cutting to
-Tod Fod Engineer]**
+**[END OF PART 1 — CLIFFHANGER, no lesson/punchline yet]**
 
-Ek hi server sab kuch kar raha hai — permission bhi de raha hai, aur poora
-movie file bhi khud hi bhej raha hai lakhon logon ko. Ye kaam ek akela
-FastAPI server ke liye nahi hai. Jab 100,000 log ek saath aayenge, ye server
-udd jayega.
+Hold on the diagram + Bro's shocked/naive framing. Text overlay: "kya hoga
+iska? part 2 me pata chalega 👀"
 
-Asli fix: ek system decide karta hai "kaun dekh sakta hai" — doosra system
-(CDN + storage) actually video deliver karta hai. Do alag kaam, do alag
-system.
-
-**[THE PUNCHLINE — Tod Fod Engineer on screen, stamp on screen: "Let's tod
-fod it"]**
-
-Let's tod fod it. 🫡
-
-**[OUTRO / HOOK FOR NEXT EP]**
-
-100,000 log aaye, Bro ka server pura crash ho gaya. Agli baar dikhayenge
-kaise.
-
-Follow for part 2.
+Caption tease, no resolution — the roast/fix/punchline all live in Part 2.
 
 ---
 
-*True Story!! 😂*
+*True Story!! 😂 Part 1/? — follow for Part 2*
 
 ---
 
 **Caption for post:**
 Hum hai 3-Dudez 🐱 Bambani, Bro, aur Tod Fod Engineer. Bro ka architecture
-dekh ke khud hi bologe "yeh kya bakwaas hai" 💀 #hiojotstar #systemdesign
-#3dudez #catsofinstagram #buildinpublic
+dekh ke khud hi bologe "yeh kya bakwaas hai" 💀 Part 1 — Part 2 mein hoga
+tod fod. #hiojotstar #systemdesign #3dudez #catsofinstagram #buildinpublic
 
 ---
 
@@ -98,18 +85,15 @@ Rough beat-to-cat mapping (adjust once VO is recorded and timestamped):
    Bro to sell the beef, faster cut pace
 7. "Bro bnaega Hio Jotstar" → hold on Bro, confident framing
 8. "Bro ka architecture h guu" → whiteboard-sketch diagram overlay appears
-   over Bro's shot
-9. Lesson VO → diagram stays on screen or transitions to corrected
-   two-box diagram
-10. "Let's tod fod it" → hard cut to Tod Fod Engineer, punchline stamp
-    on-screen, timed to hit exactly on the line
+   over Bro's shot, holds through end card
+9. Cut to black / "Part 2 me pata chalega" tease card
 
 ---
 
 ## Older English draft (superseded)
 
 Kept for reference — not the version being produced. The rhyme script above
-is canonical for Episode 1 going forward.
+is canonical going forward.
 
 **[HOOK — first 2 seconds, punchy]**
 
