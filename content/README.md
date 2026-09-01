@@ -20,7 +20,12 @@ keep it in every episode so it becomes recognizable.
 
 - `short/` — Insta Reel / YT Short scripts. One episode = one failure = one
   fix. Named `NN-topic.md`, in episode order. Each file has the full script
-  (hook / setup / roast / lesson / outro) plus a ready-to-use caption.
+  (hook / setup / roast / lesson / outro) plus a ready-to-use caption and a
+  voiceover-only version to read over your cat footage.
+- `twitter/` — X/Twitter thread version of each episode, same beats
+  compressed into tweet-sized chunks with inline ASCII diagrams. Post it as
+  a reply-chain under the video clip, or standalone for people who'd rather
+  read than watch.
 - `long/` — companion "director's cut" write-ups for YouTube long-form or a
   blog, same Hio Jotstar story but with the full technical depth and
   diagrams. Optional — not every short needs one.
@@ -44,13 +49,13 @@ Keep each script short enough to read aloud in 30-45 seconds.
 
 ## Episode status
 
-| # | Episode title | Lesson | Long-form companion |
-|---|---|---|---|
-| 01 | The Ban | API shouldn't serve video bytes directly | Control plane vs data plane |
-| 02 | The Meltdown | Split control plane (permission) from data plane (delivery) | — |
-| 03 | One File to Rule Them All (Bad Idea) | Segments + adaptive bitrate streaming | — |
-| 04 | Everyone Presses Play | 1M users = 3 different workloads, not 1 big number | Scaling to a cricket match |
-| 05 | TBD (from Layer3) | Live streaming: content doesn't exist yet when people start watching | — |
+| # | Episode title | Lesson | Twitter thread | Long-form companion |
+|---|---|---|---|---|
+| 01 | The Ban | API shouldn't serve video bytes directly | ✅ | Control plane vs data plane |
+| 02 | The Meltdown | Split control plane (permission) from data plane (delivery) | ✅ | — |
+| 03 | One File to Rule Them All (Bad Idea) | Segments + adaptive bitrate streaming | ✅ | — |
+| 04 | Everyone Presses Play | 1M users = 3 different workloads, not 1 big number | ✅ | Scaling to a cricket match |
+| 05 | TBD (from Layer3) | Live streaming: content doesn't exist yet when people start watching | — | — |
 
 ## Next up
 
