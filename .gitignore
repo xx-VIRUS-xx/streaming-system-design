@@ -5,3 +5,7 @@
 *.wav
 .DS_Store
 Clips/
+
+.env
+exports/
+IMG_*
