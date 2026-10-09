@@ -45,10 +45,10 @@ Keep each script short enough to read aloud in 30-45 seconds.
 
 ## Source material
 
-- [`../Hotstar_Learning_Path.md`](../Hotstar_Learning_Path.md) — full curriculum
-- [`../Layer1.txt`](../Layer1.txt) / [`../Layer1_Flow_Diagrams.md`](../Layer1_Flow_Diagrams.md) — ingestion → playback
-- [`../Layer2.txt`](../Layer2.txt) / [`../Layer2_Flow_Diagrams.md`](../Layer2_Flow_Diagrams.md) — scaling to 1M+ users
-- [`../Layer3.txt`](../Layer3.txt) — not started yet ("The Everyone Presses Play Problem")
+- [`../docs/learning-path.md`](../docs/learning-path.md) — full curriculum
+- [`../docs/raw-notes/Layer1.txt`](../docs/raw-notes/Layer1.txt) / [`../docs/diagrams/Layer1_Flow_Diagrams.md`](../docs/diagrams/Layer1_Flow_Diagrams.md) — ingestion → playback
+- [`../docs/raw-notes/Layer2.txt`](../docs/raw-notes/Layer2.txt) / [`../docs/diagrams/Layer2_Flow_Diagrams.md`](../docs/diagrams/Layer2_Flow_Diagrams.md) — scaling to 1M+ users
+- [`../docs/raw-notes/Layer3.txt`](../docs/raw-notes/Layer3.txt) — not started yet ("The Everyone Presses Play Problem")
 
 ## Story / Part status
 

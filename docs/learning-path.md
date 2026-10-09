@@ -6,9 +6,9 @@ This path starts from a naive video app and gradually builds toward a large-scal
 
 A streaming platform has two major planes:
 
-Detailed diagrams for this layer: [Layer1_Flow_Diagrams.md](Layer1_Flow_Diagrams.md)
+Detailed diagrams for this layer: [Layer1_Flow_Diagrams.md](diagrams/Layer1_Flow_Diagrams.md)
 
-Scaling diagrams for the next layer: [Layer2_Flow_Diagrams.md](Layer2_Flow_Diagrams.md)
+Scaling diagrams for the next layer: [Layer2_Flow_Diagrams.md](diagrams/Layer2_Flow_Diagrams.md)
 
 ### Control Plane
 
